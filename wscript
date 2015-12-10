@@ -6,7 +6,7 @@ class nvcompress(Task):
     def keyword(self):
         return "NVCompressing"
     def run(self):
-        return self.exec_command('%s %s %s %s > /dev/null' % (
+        return self.exec_command('%s %s "%s" "%s" > /dev/null' % (
             self.env.NVCOMPRESS[0],
             self.__dict__['compression'],
             self.inputs[0].abspath(),
@@ -24,7 +24,7 @@ class mtl(Task):
     color   = 'BLUE'
     def keyword(self):
         return "Processing"
-    run_str = "${SED} -e 's/\.\(png\|jpe\?g\)/\.dds/' ${SRC} > ${TGT}"
+    run_str = "${SED} -e 's/\.\(png\|jpe\?g\)/\.dds/g' ${SRC} > ${TGT}"
 
 @TaskGen.extension('.mtl')
 def process(self, node):
