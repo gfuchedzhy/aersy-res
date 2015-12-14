@@ -1,8 +1,9 @@
+import shutil, re
 from waflib import TaskGen
 from waflib.Task import Task
 
 class nvcompress(Task):
-    color   = 'PINK'
+    color = 'PINK'
     def keyword(self):
         return "NVCompressing"
     def run(self):
@@ -12,45 +13,45 @@ class nvcompress(Task):
             self.inputs[0].abspath(),
             self.outputs[0].abspath()))
 
-@TaskGen.extension('normalmap.png', 'normalmap.jpg', 'normalmap.jpeg')
+@TaskGen.extension('nmap.png', 'nmap.jpg', 'nmap.jpeg')
 def process(self, node):
-    tsk = self.create_task('nvcompress', node, node.change_ext('.dds'), compression='-bc5 -normal')
+    self.create_task('nvcompress', node, node.change_ext('.dds'), compression='-bc5 -normal')
 
 @TaskGen.extension('.png', '.jpg', '.jpeg')
 def process(self, node):
-    tsk = self.create_task('nvcompress', node, node.change_ext('.dds'), compression='-bc3')
+    self.create_task('nvcompress', node, node.change_ext('.dds'), compression='-bc3')
 
 class mtl(Task):
-    color   = 'BLUE'
+    color = 'BLUE'
     def keyword(self):
         return "Processing"
-    run_str = "${SED} -e 's/\.\(png\|jpe\?g\)/\.dds/g' ${SRC} > ${TGT}"
+    def run(self):
+        with open(self.inputs[0].abspath()) as inp, open(self.outputs[0].abspath(), "w") as out:
+            for line in inp:
+                out.write(re.sub(r'\.(png|jpe?g)', '.dds', line))
 
-@TaskGen.extension('.mtl')
+@TaskGen.extension('.mtl', '.3ds')
 def process(self, node):
-    tsk = self.create_task('mtl', node, node.get_bld())
+    self.create_task('mtl', node, node.get_bld())
 
 class copy(Task):
-    color   = 'BLUE'
+    color = 'BLUE'
     def keyword(self):
         return "Copying"
-    run_str = "${CP} ${SRC} ${TGT}"
+    def run(self):
+        shutil.copy(self.inputs[0].abspath(), self.outputs[0].abspath())
 
 @TaskGen.feature('copy')
 def process(self):
-    tsk = self.create_task('copy', self.source[0], self.source[0].get_bld())
+    self.create_task('copy', self.source[0], self.source[0].get_bld())
 
 def options(opt):
     pass
 
 def configure(cnf):
     cnf.find_program('nvcompress')
-    cnf.find_program('cp')
-    cnf.find_program('sed')
 
 def build(bld):
-    bld(source=bld.path.ant_glob('**/*.png'))
-    bld(source=bld.path.ant_glob('**/*.jpg'))
-    bld(source=bld.path.ant_glob('**/*.jpeg'))
+    bld(source=bld.path.ant_glob(['**/*.png', '**/*.jpg', '**/*.jpeg']))
     bld(source=bld.path.ant_glob('**/*.mtl'))
     bld(features='copy', source=bld.path.ant_glob('**/*.obj'))
