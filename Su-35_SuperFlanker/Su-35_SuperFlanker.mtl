@@ -6,11 +6,11 @@
 # 
 
 newmtl plane
-Ka 0.117647 0.117647 0.117647
-Kd 1 1 1
-Ks 0.752941 0.752941 0.752941
+Ka 0.25 0.25 0.25
+Kd 0.5 0.5 0.5
+Ks 0.25 0.25 0.25
 illum 2
-Ns 8
+Ns 30
 map_Kd Su-35_SuperFlanker_P01.png
 map_bump Su-35_SuperFlanker_nmap.png
 bump Su-35_SuperFlanker_nmap.png
@@ -22,9 +22,9 @@ map_kA
 map_Ns 
 
 newmtl seat
-Ka 0.117647 0.117647 0.117647
-Kd 1 1 1
-Ks 0.752941 0.752941 0.752941
+Ka 0.25 0.25 0.25
+Kd 0.5 0.5 0.5
+Ks 0.2 0.2 0.2
 illum 2
 Ns 8
 map_Kd Eject_Seat.png
@@ -38,9 +38,9 @@ map_kA
 map_Ns 
 
 newmtl pilot
-Ka 0.117647 0.117647 0.117647
-Kd 1 1 1
-Ks 0.752941 0.752941 0.752941
+Ka 0.25 0.25 0.25
+Kd 0.5 0.5 0.5
+Ks 0.2 0.2 0.2
 illum 2
 Ns 8
 map_Kd Pilot_usa.png
@@ -54,11 +54,11 @@ map_kA
 map_Ns 
 
 newmtl glass
-Ka 0.117647 0.117647 0.117647
-Kd 1 1 1
-Ks 0.752941 0.752941 0.752941
+Ka 0.25 0.25 0.25
+Kd 0.5 0.5 0.5
+Ks 1 1 1
 illum 2
-Ns 8
+Ns 40
 map_Kd Glass_Cockpit.png
 map_bump 
 bump 
